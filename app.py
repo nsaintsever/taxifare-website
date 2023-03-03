@@ -8,8 +8,6 @@ from streamlit_folium import folium_static
 st.markdown("""# :oncoming_taxi: NYC TaxiFare - At your service ! :taxi:
 """)
 
-st.sidebar.markdown("""# Enter your infos :smiley: """)
-
 date = st.sidebar.date_input("Enter a date")
 time = st.sidebar.time_input("Enter time of the ride")
 passenger_count = st.sidebar.slider("How many passengers?", 1,8,1)
@@ -39,12 +37,14 @@ if dropoff_address:
 map = folium.Map(location=NY_coordinates,tiles="stamentoner")
 
 if pickup_address:
+    folium.Marker(pickup_coordinates,title="Pick-up address",icon=folium.Icon(color="green",icon="flag")).add_to(map)
+
     if dropoff_address:
-        folium.Marker(pickup_coordinates,title="Pick-up address").add_to(map)
-        folium.Marker(dropoff_coordinates,title="Pick-up address").add_to(map)
+        folium.Marker(dropoff_coordinates,title="Pick-up address",icon=folium.Icon(color="red",icon="flag")).add_to(map)
+        folium.FitBounds([pickup_coordinates, dropoff_coordinates]).add_to(map)
         folium.PolyLine([(float(pickup_coordinates[0]),float(pickup_coordinates[1])),(float(dropoff_coordinates[0]),float(dropoff_coordinates[1]))],
                 color='red',
-                weight=10,
+                weight=5,
                 opacity=0.8).add_to(map)
 
 folium_static(map,height=500,width=800)
@@ -70,5 +70,7 @@ if pickup_address:
 
 
         st.sidebar.markdown(f"""
-                            # Estimated price for you ride is :
-                            # :heavy_dollar_sign: """ +str(round(amount,2)))
+                            ## Estimated price for you ride is :
+                            ### :heavy_dollar_sign: """ +str(round(amount,2)))
+
+st.sidebar.markdown("""## :sparkling_heart: Thanks for using TaxiFare :sparkling_heart: """)
