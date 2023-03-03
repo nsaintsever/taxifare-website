@@ -3,7 +3,6 @@ import pandas as pd
 import requests
 import folium
 from streamlit_folium import folium_static
-from geopy.distance import distance
 
 
 st.markdown("""# :oncoming_taxi: NYC TaxiFare - At your service ! :taxi:
